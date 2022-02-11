@@ -33,8 +33,8 @@ function compute() {
 
   let layout = {
     title: "Nucleotide Frequency",
-    //    height: 400,
-    //    width: 500
+    height: 400,
+    width: 500
     /*
    font:{
       family: 'Raleway, sans-serif'
