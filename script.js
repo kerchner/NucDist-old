@@ -1,40 +1,60 @@
 function compute() {
-  let dna = document.getElementById('dna').value;
-  console.log("dna = ", dna);
-  console.log("dna.length = ", dna.length)
+  let dna = document.getElementById("dna").value;
+  dna = dna.toUpperCase(); // convert everything to uppercase
+  dna = dna.replace(/[^A-Z]/g,""); // remove anything other than A-Z
   
-  // compute counts of letters
-  let letterMap = new Map(); // it's going to look like {'A': 5, 'C': 8, ...}
-  for(let i = 0; i < dna.length; i++) {
+  let lettercounts = new Map(); // Map to hold our tallies, e.g. {'A': 4, 'C': 5, ...}
+  
+  for (let i = 0; i < dna.length; i++) {
     let letter = dna[i];
-    if (letterMap.has(letter)) {
-      letterMap.set(letter, letterMap.get(letter) + 1);
-    }
-    else {
-      letterMap.set(letter, 1);
+
+    if (lettercounts.has(letter)) {
+      lettercounts.set(letter, lettercounts.get(letter) + 1);
+    } else {
+      lettercounts.set(letter, 1);
     }
   }
-  
-  let letters = Array.from(letterMap.keys());
-  let counts = Array.from(letterMap.values());
-  
-  var data = [{
-    values: counts,
-    labels: letters,
-    type: 'pie'
-  }];
 
-  var layout = {
-    height: 400,
-    width: 500
+  let keys = Array.from(lettercounts.keys());
+  let vals = Array.from(lettercounts.values());
+  for (let i = 0; i < vals.length; i++) {
+    vals[i] = vals[i] / dna.length;
+  }
+  let data = [
+    {
+      labels: keys,
+      values: vals,
+      type: "pie",
+      // x: keys,
+      // y: vals,
+      // type: 'bar'
+    },
+  ];
+
+  let layout = {
+    title: "Nucleotide Frequency",
+    //    height: 400,
+    //    width: 500
+    /*
+   font:{
+      family: 'Raleway, sans-serif'
+    },
+    showlegend: false,
+    xaxis: {
+//      tickangle: -45
+    },
+    yaxis: {
+      zeroline: false,
+      gridwidth: 2
+    },
+ */
+    //   bargap :0.05
   };
 
-  Plotly.newPlot('plotDiv', data, layout);
+  Plotly.newPlot("plotDiv", data, layout);
 }
 
+
 function reset() {
-  document.getElementById('plotDiv').innerHTML = '';
-  
-  // clear out DNA value
-  document.getElementById('dna').value = '';
+  document.getElementById("plotDiv").innerHTML = "";
 }
